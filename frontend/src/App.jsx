@@ -85,7 +85,7 @@ const WebcamComponent = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userName: userName, measurements: measurements }),
-      });
+      }); 
       if (!response.ok) { throw new Error('Network response was not ok'); }
       await response.json();
       setStatusMessage(`Saved successfully for ${userName}!`);

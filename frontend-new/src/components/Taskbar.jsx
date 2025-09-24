@@ -17,7 +17,7 @@ const Taskbar = ({ isLoggedIn }) => {
           </li>
           <li className="taskbar-item">
             {isLoggedIn ? (
-              <a href="/profile" className="taskbar-link">My Profile</a>
+              <a href="/profile" className="taskbar-link">Profile</a>
             ) : (
               <a href="/login" className="taskbar-link">Login</a>
             )}

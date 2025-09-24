@@ -4,7 +4,7 @@ import img from "../assets/bluepantshirt.png";
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient'; // Import the supabase client
 
-const Login = () => {
+const Login = ({onLogin}) => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,8 +21,8 @@ const Login = () => {
             if (error) throw error;
             
             alert('Logged in successfully!');
-            // You can navigate to a dashboard or home page after login
-            // navigate('/dashboard'); 
+            onLogin(); // update parent state
+            navigate("/profile"); // redirect after login
 
         } catch (error) {
             alert(error.error_description || error.message);
@@ -39,6 +39,7 @@ const Login = () => {
                     <h2>Login</h2>
                     {/* Use the handleLogin function on form submission */}
                     <form onSubmit={handleLogin}>
+                     
                         <div className="input-group">
                             {/* Note: Supabase uses email for login by default */}
                             <input 
