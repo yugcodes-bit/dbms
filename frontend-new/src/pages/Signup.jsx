@@ -3,10 +3,12 @@ import './Login.css'; // Reusing the same styles
 import img from "../assets/bluepantshirt.png";
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient'; // Import the Supabase client
+import Spinner from '../components/Spinner';
 
 const Signup = () => {
     const navigate = useNavigate();
     // Add state for each input field
+     const [loading,setLoading]=useState(false);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -14,6 +16,7 @@ const Signup = () => {
     // This function will be called when the form is submitted
     const handleSignup = async (event) => {
         event.preventDefault(); // Prevent the page from refreshing
+        setLoading(true);
 
         try {
             const { data, error } = await supabase.auth.signUp({
@@ -30,13 +33,14 @@ const Signup = () => {
             if (error) throw error;
             
             // Show a success message and guide the user
-            alert('Account created successfully! Please check your email for a verification link.');
-            
             // Send the user to the login page after they sign up
             navigate('/login'); 
 
         } catch (error) {
             alert(error.error_description || error.message);
+        }
+        finally{
+            setLoading(false);
         }
     };
 
@@ -46,6 +50,7 @@ const Signup = () => {
                 <img src={img} alt="Apparel" />
             </div>
             <div className="login-container">
+                {loading && <Spinner />}
                 <div className="login-card">
                     <h2>Sign-up</h2>
                     {/* Add the onSubmit handler to the form */}
@@ -84,7 +89,7 @@ const Signup = () => {
                             <label htmlFor="password">Password</label>
                         </div>
                         <button type="submit" className="login-button">
-                            Sign-up
+                           {loading ? "Signing in" : "Sign in"}
                         </button>
                     </form>
                     <p className="signup-link">

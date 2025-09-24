@@ -1,11 +1,18 @@
-import React from 'react'
+import React from 'react';
+import Cards from '../components/Cards';
+import './global.css'
 
 const Explore = () => {
   return (
     <div>
-      Explore
-    </div>
-  )
-}
+      <div className='height'>
 
-export default Explore
+      </div>
+      <Cards />
+      <Cards />
+      <Cards />
+    </div>
+  );
+};
+
+export default Explore;

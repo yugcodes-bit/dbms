@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
+import Spinner from '../components/Spinner';
 
 const Profile = () => {
   const navigate = useNavigate();
+  const [loading,setLoading]=useState(false);
   const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
@@ -21,17 +23,19 @@ const Profile = () => {
   }, [navigate]);
 
   const handleLogout = async () => {
+    setLoading(true);
     const { error } = await supabase.auth.signOut();
     if (error) {
       alert(error.message);
     } else {
-      alert("Logged out successfully!");
       navigate("/login");
+      setLoading(false);
     }
   };
 
   return (
     <div className="profile-container">
+      {loading && <Spinner />}
       <h2>Welcome, {userEmail ? userEmail : "User"} </h2>
       <button onClick={handleLogout} className="logout-button">
         Logout

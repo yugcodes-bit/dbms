@@ -3,14 +3,17 @@ import './Login.css';
 import img from "../assets/bluepantshirt.png";
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient'; // Import the supabase client
+import Spinner from '../components/Spinner';
 
 const Login = ({onLogin}) => {
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = async (event) => {
         event.preventDefault(); // Prevent the form from refreshing the page
+        setLoading(true);
 
         try {
             const { data, error } = await supabase.auth.signInWithPassword({
@@ -20,21 +23,26 @@ const Login = ({onLogin}) => {
 
             if (error) throw error;
             
-            alert('Logged in successfully!');
             onLogin(); // update parent state
             navigate("/profile"); // redirect after login
 
         } catch (error) {
             alert(error.error_description || error.message);
         }
+        finally {
+    setLoading(false); // stop loading
+  }
     };
 
     return (
+      
         <div className="split-screen-container">
+
             <div className="image-container">
                 <img src={img} alt="Apparel" />
             </div>
             <div className="login-container">
+              {loading && <Spinner />}
                 <div className="login-card">
                     <h2>Login</h2>
                     {/* Use the handleLogin function on form submission */}
@@ -62,9 +70,10 @@ const Login = ({onLogin}) => {
                             />
                             <label htmlFor="password">Password</label>
                         </div>
-                        <button type="submit" className="login-button">
-                            Login
+                       <button type="submit" disabled={loading} className="login-button">
+                            {loading ? "Logging in" : "Login"}
                         </button>
+                         
                     </form>
                     <p className="signup-link">
                         Don't have an account? <Link to="/signup"> Signup</Link>
